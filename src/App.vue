@@ -3,25 +3,23 @@
   import MainComp from './components/MainComp.vue';
   import About from './components/About.vue';
   import { ref, onMounted } from 'vue';
-  import { useStore } from 'vuex';
+  // import { useStore } from 'vuex';
+  import { useStore } from './store/store';
+  import { storeToRefs } from 'pinia';
 
   const store = useStore();
+  const { toggle } = storeToRefs(store);
 
   // 앱이 실행되면 날씨 데이터 가져오기
   onMounted(() => {
-    store.dispatch('getWeather');
+    store.getWeather();
   })
 
-  // 검색어 이벤트 함수
-  const onSearchCity = (city) => {
-    weatherData.value.city = city;
-    getWeather();
-  }
 </script>
 
 <template>
   <Navbar />
-  <div v-if="!$store.state.toggle">
+  <div v-if="!toggle">
     <MainComp />
   </div>
   <div v-else>
